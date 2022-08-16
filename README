@@ -1,0 +1,9 @@
+# Used to list all wireless networks that PC has ever connected to;
+> netsh wlan show profiles
+
+# Show the profile of a especific network
+> netsh wlan show profiles [NETWORK-NAME]
+
+# Show the password in clear text
+> netsh wlan show profiles [NETWORK-NAME] key=clear
+
