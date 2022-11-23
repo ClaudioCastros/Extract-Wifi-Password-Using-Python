@@ -3,22 +3,22 @@ import subprocess
 import re
 
 command_output = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output = True).stdout.decode(errors='ignore')
-
-profile_names = (re.findall("Todos os Perfis de Usurios: (.*)\r", command_output))
+print(command_output)
+profile_names = (re.findall('Todos os Perfis de Usurios: (.*)\r', command_output))
 
 wifi_list = list()
 
 if len(profile_names) != 0:
     for name in profile_names:
         wifi_profile = dict()
-        profile_info = subprocess.run(["netsh", "wlan", "show", "profile", name], capture_output = True).stdout.decode(errors='ignore')
+        profile_info = subprocess.run(["netsh", "wlan", "show", "profile", str(name).encode('utf-8')], capture_output = True).stdout.decode(errors='ignore')
         
         if re.search("Chave de segurana           : Ausente", profile_info):
             continue
         else:
             wifi_profile["ssid"] = name
 
-            profile_info_pass = subprocess.run(["netsh", "wlan", "show", "profile", name, "key=clear"], capture_output = True).stdout.decode(errors='ignore')
+            profile_info_pass = subprocess.run(["netsh", "wlan", "show", "profile", str(name), "key=clear"], capture_output = True).stdout.decode(errors='ignore')
             
             password = re.search("Contedo da Chave            : (.*)\r", profile_info_pass)
 
